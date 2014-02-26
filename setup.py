@@ -7,16 +7,6 @@ import re
 import sys
 
 
-# When creating the sdist, make sure the django.mo file also exists:
-if 'sdist' in sys.argv:
-    try:
-        os.chdir('django_multisafepay')
-        from django.core.management.commands.compilemessages import compile_messages
-        compile_messages(sys.stderr)
-    finally:
-        os.chdir('..')
-
-
 def read(*parts):
     file_path = path.join(path.dirname(__file__), *parts)
     return codecs.open(file_path, encoding='utf-8').read()

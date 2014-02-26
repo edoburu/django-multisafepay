@@ -1,0 +1,1 @@
+<a href="checkout.php">Checkout</a>

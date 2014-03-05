@@ -28,7 +28,7 @@ class NotificationView(View):
         statusreply = client.status(self.transaction_id)
 
         # Let the project update the status
-        order_status_updated.send(self.__class__, response=statusreply)
+        order_status_updated.send(self.__class__, statusreply=statusreply, request=self.request)
 
         if self.type == 'initial':
             # displayed at the last page of the transaction process (if no redirect_url is set)

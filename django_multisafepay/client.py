@@ -94,7 +94,7 @@ class MultiSafepayClient(object):
         :rtype: xml.etree.ElementTree.Element
         """
         postdata = message.to_xml()
-        logger.debug(u"sending to {0}:\n{0}".format(self.api_url, postdata))
+        logger.debug(u"sending to {0}:\n{1}".format(self.api_url, postdata))
 
         response = requests.post(
             self.api_url,
@@ -103,7 +103,7 @@ class MultiSafepayClient(object):
                 'Accept': 'text/xml; charset=utf-8',
                 'User-Agent': 'django-multisafepay/{0}'.format(package_version),
             },
-            data=postdata,
+            data=postdata.encode('utf-8'),
             allow_redirects=False,
             verify=True
         )
@@ -113,8 +113,8 @@ class MultiSafepayClient(object):
             logger.error(u"http failed: {0} {1}".format(response.status_code, response.content))
             response.raise_for_status()
 
-        if '/xml' not in response.header['Content-Type']:
-            raise MultiSafepayException("Received invalid content-type: {0}".format(response.header['Content-Type']))
+        if '/xml' not in response.headers['Content-Type']:
+            raise MultiSafepayException("Received invalid content-type: {0}".format(response.headers['Content-Type']))
 
         logger.debug(u"http succeeded: {0}".format(response.content))
 

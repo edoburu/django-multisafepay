@@ -24,16 +24,17 @@ Install via pip::
 Configuration
 -------------
 
-Configure the application:
+In the MultiSafepay merchant `site settings <https://merchant.multisafepay.com/account/details/sites/>`_,
+add a new website. Use those settings to configure the application:
 
 `MULTISAFEPAY_ACCOUNT_ID`
-    Credentials as supplied by the payment provider.
+    The account ID, provided by MultiSafepay.
 
 `MULTISAFEPAY_SITE_ID`
-    Credentials as supplied by the payment provider.
+    The site ID, found in the MultiSafepay website settings panel.
 
 `MULTISAFEPAY_SITE_CODE`
-    Credentials as supplied by the payment provider.
+    The site security code, found in the MultiSafepay website settings panel.
 
 `MULTISAFEPAY_TESTING`
     Whether or not to run in testing mode. Defaults to `True`.

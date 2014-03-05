@@ -6,8 +6,8 @@ import requests
 from xml.etree import ElementTree
 from django_multisafepay import __version__ as package_version
 from django_multisafepay import appsettings, messages
+from django_multisafepay.data import Merchant, Plugin
 from django_multisafepay.exceptions import MultiSafepayServerException, MultiSafepayException
-from django_multisafepay.values import Merchant, Plugin
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ class MultiSafepayClient(object):
         :type is_test: bool
         """
         self.merchant = merchant or Merchant()
-        self.plugin = plugin
+        self.plugin = plugin or Plugin()
         self.is_test = is_test if is_test is not None else appsettings.MULTISAFEPAY_TESTING
 
 
@@ -42,21 +42,30 @@ class MultiSafepayClient(object):
         return URL_TEST if self.is_test else URL_LIVE
 
 
-    def start_checkout(self, transaction, customer, customer_delivery, cart=None, fields=None, checkout_settings=None, google_analytics=None):
+    def start_checkout(self, transaction, customer, customer_delivery=None, cart=None, fields=None, checkout_settings=None, google_analytics=None):
         """
         Start the checkout (Fast-Checkout method)
 
+        :param transaction: The information about the transaction.
         :type transaction: Transaction
+        :param customer: The information about the customer.
         :type customer: Customer
+        :param customer_delivery: The delivery address.
         :type customer_delivery: CustomerDelivery
+        :param cart: The shopping cart.
+        :type cart: Cart
+        :param fields: Not supported yet.
+        :param checkout_settings: Checkout sessions, only provides "use shipping notification" for now.
+        :type checkout_settings: CheckoutSettings
+        :param google_analytics: Analytics to use on the payment page.
         :type google_analytics: GoogleAnalytics
         :rtype: CheckoutTransactionReply
         """
         xml = self._call(messages.CheckoutTransaction(
             merchant=self.merchant,
+            transaction=transaction,
             customer=customer,
             customer_delivery=customer_delivery,
-            transaction=transaction,
             cart=cart,
             fields=fields,
             plugin=self.plugin,

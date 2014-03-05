@@ -35,7 +35,7 @@ class Transaction(XmlObject):
         """
         self.id = id
         self.currency = currency
-        self.amount = int(amount)
+        self.amount = int(amount) if amount else None
         self.description = description
         self.items = items
         self.manual = manual

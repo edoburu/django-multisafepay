@@ -1,5 +1,6 @@
-from django_multisafepay.data import Customer, CustomerDelivery, Transaction, Merchant
-from django_multisafepay.data.status import Ewallet, PaymentDetails
+# coding=utf-8
+from django_multisafepay.data import CustomerDelivery, Transaction, Merchant
+from django_multisafepay.data.status import Ewallet, PaymentDetails, StatusCustomer, CheckoutData
 from .base import MessageObject
 
 
@@ -31,7 +32,87 @@ class StatusReply(object):
     """
     Reply from a status call.
     """
+
+    # <status result="ok">
+    #   <ewallet>
+    #     <id>2118132</id>
+    #     <status>completed</status>
+    #     <fastcheckout>YES</fastcheckout>
+    #     <created>20140305191332</created>
+    #     <modified>20140305191335</modified>
+    #     <reasoncode/>
+    #     <reason/>
+    #   </ewallet>
+    #   <customer>
+    #     <amount>2000</amount>      <!-- NOTE these 3 extra fields!! -->
+    #     <currency>EUR</currency>
+    #     <account/>
+    #     <locale>en_US</locale>
+    #     <firstname>Diederik</firstname>
+    #     <lastname>van der Boor</lastname>
+    #     <address1>Foo</address1>
+    #     <address2/>
+    #     <housenumber>...</housenumber>
+    #     <zipcode>...</zipcode>
+    #     <city>...</city>
+    #     <state/>
+    #     <country>NL</country>
+    #     <countryname/>
+    #     <phone1/>
+    #     <phone2/>
+    #     <email>foo@example.org</email>
+    #   </customer>
+    #   <customer-delivery/>
+    #   <transaction>
+    #     <id>7</id>
+    #     <currency>EUR</currency>
+    #     <amount>2000</amount>
+    #     <description>...</description>
+    #     <var1>5</var1>
+    #     <var2/>
+    #     <var3/>
+    #     <items/>
+    #   </transaction>
+    #   <paymentdetails>
+    #     <type>IDEAL</type>
+    #     <accountiban>NL53INGB0654422370</accountiban>     <!--  NOTE these 3 extra fields!! -->
+    #     <accountbic>INGBNL2A</accountbic>
+    #     <accountid>654422370</accountid>
+    #     <accountholdername>Hr E G H Küppers en/of MW M.J. Küppers-Veeneman</accountholdername>
+    #     <externaltransactionid>0050000081927015</externaltransactionid>
+    #   </paymentdetails>
+    #   <checkoutdata version="0.1">
+    #     <checkout-flow-support><merchant-checkout-flow-support>
+    #       <shipping-methods>
+    #         <pickup name="Online">
+    #           <price currency="EUR">0.00</price>
+    #         </pickup>
+    #       </shipping-methods>
+    #     </merchant-checkout-flow-support></checkout-flow-support>
+    #     <order-adjustment>
+    #       <shipping>
+    #         <pickup>
+    #           <shipping-name>Online</shipping-name>           <!--  NOTE different tag format!! -->
+    #           <shipping-cost currency="EUR">0.00</shipping-cost>
+    #         </pickup>
+    #       </shipping>
+    #       <adjustment-total currency="EUR">0.00</adjustment-total>
+    #       <total-tax currency="EUR">0.00</total-tax>
+    #     </order-adjustment>
+    #     <order-total currency="EUR">20.00</order-total>
+    #   </checkoutdata>
+    # </status>
+
+
     def __init__(self, ewallet, customer, customer_delivery, transaction, payment_details, checkoutdata):
+        """
+        :type ewallet: Ewallet
+        :type customer: StatusCustomer
+        :type customer_delivery: CustomerDelivery
+        :type transaction: Transaction
+        :type payment_details: PaymentDetails
+        :type checkoutdata: CheckoutData
+        """
         self.ewallet = ewallet
         self.customer = customer
         self.customer_delivery = customer_delivery
@@ -54,11 +135,11 @@ class StatusReply(object):
         """
         return cls(
             ewallet=Ewallet.from_xml(xml.find('ewallet')),
-            customer=Customer.from_xml(xml.find('customer')),
+            customer=StatusCustomer.from_xml(xml.find('customer')),
             customer_delivery=CustomerDelivery.from_xml(xml.find('customer-delivery')),
             transaction=Transaction.from_xml(xml.find('transaction')),
-            paymentdetails=PaymentDetails.from_xml(xml.find('paymentdetails')),
-            checkoutdata=None  # TODO: not implemented yet. Contains <shopping-cart>, <order-adjustment>
+            payment_details=PaymentDetails.from_xml(xml.find('paymentdetails')),
+            checkoutdata=CheckoutData.from_xml(xml.find('checkoutdata'))
         )
 
     @property

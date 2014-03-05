@@ -3,7 +3,7 @@ from django.utils.html import format_html
 from django.views.generic import View
 from django.utils.translation import ugettext_lazy as _
 from django_multisafepay.client import MultiSafepayClient
-from django_multisafepay.signals import order_status_changed
+from django_multisafepay.signals import order_status_updated
 
 
 class NotificationView(View):
@@ -25,7 +25,7 @@ class NotificationView(View):
         statusreply = client.status(self.transaction_id)
 
         # Let the project update the status
-        order_status_changed.send(self.__class__, response=statusreply)
+        order_status_updated.send(self.__class__, response=statusreply)
 
         if self.type == 'initial':
             # displayed at the last page of the transaction process (if no redirect_url is set)

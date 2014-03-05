@@ -125,7 +125,12 @@ class MultiSafepayClient(object):
         if '/xml' not in response.headers['Content-Type']:
             raise MultiSafepayException("Received invalid content-type: {0}".format(response.headers['Content-Type']))
 
-        logger.debug(u"http succeeded: {0}".format(response.content))
+        # Fix MultiSafepay response header error.
+        # Encoding is only specified in the <?xml preamble, not in the HTTP Content-Type header.
+        # "response.text" parses the response in the proper encoding format.
+        # "response.content" is the raw content, that's being sent to the XML parser.
+        response.encoding = 'utf-8'
+        logger.debug(u"http succeeded: {0}".format(response.text))
 
-        xml = ElementTree.fromstring(response.content)
+        xml = ElementTree.fromstring(response.content, parser=ElementTree.XMLParser(encoding=response.encoding))
         return xml

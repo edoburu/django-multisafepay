@@ -1,4 +1,5 @@
 from .base import XmlObject, Price
+from django_multisafepay.data import Customer
 
 
 class Ewallet(XmlObject):
@@ -9,16 +10,46 @@ class Ewallet(XmlObject):
     xml_name = 'ewallet'
     xml_fields = (
         'id',
+        'fastcheckout',
         'status',
         'created',
         'modified',
+        'reason',
+        'reasoncode',
     )
 
-    def __init__(self, id, status, created, modified):
+    def __init__(self, id, status, fastcheckout, created, modified, reason=None, reasoncode=None):
         self.id = id
         self.status = status
+        self.fastcheckout = bool(fastcheckout is True or fastcheckout == 'YES')
         self.created = created
         self.modified = modified
+        self.reason = reason
+        self.reasoncode = reasoncode
+
+
+class StatusCustomer(Customer):
+    """
+    A customer with additional fields.
+    """
+    xml_fields = Customer.xml_fields + (
+        'amount',
+        'currency',
+        'account',
+        'phone1',
+        'phone2',
+        'countryname'
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.amount = kwargs.pop('amount')
+        self.currency = kwargs.pop('currency')
+        self.account = kwargs.pop('account')
+        self.phone1 = kwargs.pop('phone1')
+        self.phone2 = kwargs.pop('phone2')
+        self.countryname = kwargs.pop('countryname')
+        super(StatusCustomer, self).__init__(*args, **kwargs)
+
 
 
 class PaymentDetails(XmlObject):
@@ -27,12 +58,14 @@ class PaymentDetails(XmlObject):
     """
     xml_name = 'paymentdetails'
     xml_fields = (
+        'type',
         'accountid',
         'accountholdername',
         'externaltransactionid',
     )
 
-    def __init__(self, accountid, accountholdername, externaltransactionid):
+    def __init__(self, type, accountid, accountholdername, externaltransactionid):
+        self.type = type
         self.accountid = accountid
         self.accountholdername = accountholdername
         self.externaltransactionid = externaltransactionid

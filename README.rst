@@ -76,7 +76,7 @@ Usage
 Creating a new payment transaction::
 
     from django_multisafepay.client import MultiSafepayClient
-    from django_multisafepay.values import Transaction, Customer
+    from django_multisafepay.data import Transaction, Customer
     from django.shortcuts import redirect
 
     def pay(request):

@@ -39,7 +39,7 @@ class XmlObject(object):
             if value is not None:
                 if isinstance(value, XmlObject):
                     # Attribute name is ignored, tag name is used instead.
-                    lines.append(u"\n{0}\n".format(value.to_xml()))
+                    lines.append(u"{0}\n".format(value.to_xml()))
                 elif isinstance(value, Price):
                     # Inconsistent API. Using decimal notation here, but using cents somewhere else.
                     lines.append(u'<{0} currency="{1}">{2:.2f}</{0}>'.format(field, value.currency, value))

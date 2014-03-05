@@ -20,7 +20,7 @@ class NotificationView(View):
         try:
             self.transaction_id = request.GET['transactionid']
         except KeyError:
-            return HttpResponse("missing transactionid", status=404)
+            return HttpResponse("missing transactionid", status=403)
         self.type = request.GET.get('type')
 
         # Request the new status from the server.

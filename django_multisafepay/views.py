@@ -17,8 +17,11 @@ class NotificationView(View):
         """
         Handle the incoming notification request.
         """
-        self.transaction_id = request.GET['transactionid']
-        self.type = request.GET['type']
+        try:
+            self.transaction_id = request.GET['transactionid']
+        except KeyError:
+            return HttpResponse("missing transactionid", status=404)
+        self.type = request.GET.get('type')
 
         # Request the new status from the server.
         client = self.get_client()

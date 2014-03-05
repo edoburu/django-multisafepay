@@ -6,28 +6,44 @@ from django_multisafepay.client import MultiSafepayClient
 from django_multisafepay.signals import order_status_changed
 
 
-class OrderNotifyView(View):
+class NotificationView(View):
     """
     View to be called by MultiSafepay when a status update occured.
     """
     return_link_text = _('Return to webshop')
-
+    client_class = MultiSafepayClient
 
     def get(self, request, *args, **kwargs):
+        """
+        Handle the incoming notification request.
+        """
         self.transaction_id = request.GET['transactionid']
         self.type = request.GET['type']
 
         # Request the new status from the server.
-        client = MultiSafepayClient()
+        client = self.get_client()
         statusreply = client.status(self.transaction_id)
 
         # Let the project update the status
         order_status_changed.send(self.__class__, response=statusreply)
 
         if self.type == 'initial':
-            # displayed at the last page of the transaction proces (if no redirect_url is set)
-            url = request.build_absolute_uri('/')
-            return HttpResponse(format_html(u'<a href="{0}">{1}</a>', url, self.return_link_text))
+            # displayed at the last page of the transaction process (if no redirect_url is set)
+            return self.render_to_response()
         else:
             # MultiSafepay back-end expects an "ok" if no error occurred
             return HttpResponse('ok')
+
+    def get_client(self):
+        """
+        Return the MultiSafepay API client.
+        This method can be overwritten to create a custom client, with other merchant parameters for example.
+        """
+        return self.client_class()
+
+    def render_to_response(self):
+        """
+        Render the response when no redirect_url is set.
+        """
+        url = self.request.build_absolute_uri('/')
+        return HttpResponse(format_html(u'<a href="{0}">{1}</a>', url, self.return_link_text))

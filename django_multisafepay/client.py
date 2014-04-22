@@ -132,5 +132,5 @@ class MultiSafepayClient(object):
         response.encoding = 'utf-8'
         logger.debug(u"http succeeded: {0}".format(response.text))
 
-        xml = ElementTree.fromstring(response.content, parser=ElementTree.XMLParser(encoding=response.encoding))
+        xml = ElementTree.fromstring(response.content) # parser=ElementTree.XMLParser(encoding=response.encoding))  # Python 2.6 doesn't support this.
         return xml

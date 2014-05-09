@@ -77,6 +77,9 @@ class MultiSafepayClient(object):
         if xml.attrib['result'] != 'ok':
             ex = MultiSafepayServerException.from_xml(xml)
             logger.error(u"Failed to start transaction {0}: code={1}, description={2}".format(transaction.id, ex.code, ex.description))
+            if ex.code == ex.CODE_INVALID_TRANSACTION_ID:
+                # Mention transaction ID in exception message
+                ex.description += " ({0})".format(transaction.id)
             raise ex
 
         return messages.CheckoutTransactionReply.from_xml(xml)

@@ -6,6 +6,7 @@ class MultiSafepayException(Exception):
     """
     Base class for all exceptions from MultiSafepay
     """
+    CODE_INVALID_TRANSACTION_ID = '1006'
 
 
 class MultiSafepayServerException(MultiSafepayException):

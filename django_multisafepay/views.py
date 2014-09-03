@@ -1,5 +1,5 @@
 import logging
-from django.db.transaction import commit_on_success
+from django.db import transaction
 from django.http import HttpResponse
 from django.utils.html import format_html
 from django.views.generic import View
@@ -8,6 +8,13 @@ from django_multisafepay.client import MultiSafepayClient
 from django_multisafepay.signals import order_status_updated
 
 logger = logging.getLogger(__name__)
+
+# New transaction support in Django 1.6
+try:
+    transaction_atomic = transaction.atomic
+except AttributeError:
+    transaction_atomic = transaction.commit_on_success
+
 
 
 class NotificationView(View):
@@ -35,7 +42,7 @@ class NotificationView(View):
         if not order_status_updated.has_listeners():
             logger.warning("No listeners for `order_status_updated` signal!")
         else:
-            with commit_on_success():
+            with transaction_atomic():
                 order_status_updated.send(self.__class__, statusreply=statusreply, request=self.request)
 
         if self.type == 'initial':

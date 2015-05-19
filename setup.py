@@ -23,7 +23,7 @@ def find_version(*parts):
 setup(
     name='django-multisafepay',
     version=find_version('django_multisafepay', '__init__.py'),
-    license='Apache License, Version 2.0',
+    license='Apache 2.0',
 
     install_requires = [
         'requests>=1.2.1'

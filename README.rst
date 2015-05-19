@@ -6,11 +6,10 @@ MultiSafepay is a large payment gateway based in The Netherlands that supports m
 
 MultiSafepay offers two methods for payments, see https://www.multisafepay.com/en/Payment-services/:
 
-* `Fast checkout <https://www.multisafepay.com/en/fast-checkout/>`_ (requires customer login)
-* `Connect <https://www.multisafepay.com/en/connect/>`_ (full form input on your site)
-
-This package currently only implements the methods for the fast checkout method.
-Contributions to support the Connect method are welcome!
+* `Fast checkout <https://www.multisafepay.com/en/fast-checkout/>`_ requires customers to create a MultiSafePay account.
+  You only have to pay a transaction fee, but the account system is not very user-friendly.
+* `Connect <https://www.multisafepay.com/en/connect/>`_ provides direct payments.
+  As a merchant, you have to pay a monthly subscription.
 
 
 Installation
@@ -94,6 +93,11 @@ Creating a new payment transaction::
         return redirect(reply.payment_url)
 
 
+* For the Fast Checkout, use the ``start_checkout()`` method.
+* For the Connect method, use the ``redirect_transaction()`` method.
+
+Both methods return an URL to redirect the user to.
+
 Fetching status::
 
     client = MultiSafepayClient()
@@ -109,6 +113,7 @@ TODO
  * checkout-shopping-cart
  * custom-fields
  * shipping
+ * iDEAL issuers request (simple to add)
 
 
 

@@ -2,42 +2,32 @@ import hashlib
 from .base import MessageObject
 
 
-class CheckoutTransaction(MessageObject):
+class RedirectTransaction(MessageObject):
     """
-    The message to start a checkout
+    The message to start a checkout, using the Connect method.
     """
-    xml_name = 'checkouttransaction'
+    xml_name = 'redirecttransaction'
     xml_fields = (
         'merchant',
-        'plugin',
         'customer',
-        'customer_delivery',
-        'cart',             # TODO: Cart data model not implemented yet   (uses Google Checkout Cart format)
-        'fields',           # TODO: Fields data model not implemented yet (for custom form fields)
         'google_analytics',
-        'checkout_settings',
         'transaction',
+        'plugin',
         'signature',
     )
 
-    def __init__(self, merchant, transaction, customer, customer_delivery=None, cart=None, fields=None, plugin=None, checkout_settings=None, google_analytics=None):
+    def __init__(self, merchant, transaction, customer, plugin=None, google_analytics=None):
         """
         :type merchant: Merchant
+        :type transaction: Transaction
         :type customer: Customer
-        :type customer_delivery: CustomerDelivery
-        :type cart: Cart
-        :type plugin: Plugin
         :type google_analytics: GoogleAnalytics
         """
         self.merchant = merchant
-        self.plugin = plugin
         self.transaction = transaction
         self.customer = customer
-        self.customer_delivery = customer_delivery
-        self.cart = cart
-        self.fields = fields
+        self.plugin = plugin
         self.google_analytics = google_analytics
-        self.checkout_settings = checkout_settings
 
     @property
     def signature(self):
@@ -51,9 +41,9 @@ class CheckoutTransaction(MessageObject):
         return hashlib.md5(str(data)).hexdigest()
 
 
-class CheckoutTransactionReply(object):
+class RedirectTransactionReply(object):
     """
-    Reply from a start_transaction call.
+    Reply from a redirecttransaction call.
     """
     def __init__(self, id, payment_url):
         """

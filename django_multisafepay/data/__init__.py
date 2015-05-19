@@ -4,7 +4,9 @@ The data objects can be provided as parameters to the client.
 from .base import Price
 from .merchant import Merchant, Plugin
 from .customer import Customer, CustomerDelivery
-from .checkout import Transaction, CheckoutSettings, GoogleAnalytics
+from .gateway import GatewayCustomer, Gateway
+from .gatewayinfo import GatewayInfo
+from .transaction import Transaction, CheckoutSettings, GoogleAnalytics
 from .cart import Cart, ItemWeight, ShoppingCartItem, FlatRateShipping, Pickup
 
 __all__ = (
@@ -13,6 +15,8 @@ __all__ = (
     'Price',
     'Merchant', 'Plugin',
     'Customer', 'CustomerDelivery',
+    'GatewayCustomer', 'Gateway',
+    'GatewayInfo',
     'Transaction', 'CheckoutSettings', 'GoogleAnalytics',
     'Cart', 'ItemWeight', 'ShoppingCartItem', 'FlatRateShipping', 'Pickup',
 )

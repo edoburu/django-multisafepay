@@ -1,6 +1,6 @@
 # coding=utf-8
 from django_multisafepay.data import CustomerDelivery, Transaction, Merchant
-from django_multisafepay.data.status import Ewallet, PaymentDetails, StatusCustomer, CheckoutData
+from django_multisafepay.data.status import Ewallet, PaymentDetails, CustomerStatus, CheckoutData, TransactionStatus
 from .base import XmlRequest, XmlResponse
 
 
@@ -33,6 +33,9 @@ class StatusReply(XmlResponse):
     Reply from a status call.
     """
 
+    # Fast Checkout example:
+    # -----------------------
+    #
     # <status result="ok">
     #   <ewallet>
     #     <id>2118132</id>
@@ -75,10 +78,10 @@ class StatusReply(XmlResponse):
     #   </transaction>
     #   <paymentdetails>
     #     <type>IDEAL</type>
-    #     <accountiban>NL53INGB0654422370</accountiban>     <!--  NOTE these 3 extra fields!! -->
+    #     <accountiban>NL30INGB0123456789</accountiban>     <!--  NOTE these 3 extra fields because of iDEAL!! -->
     #     <accountbic>INGBNL2A</accountbic>
-    #     <accountid>654422370</accountid>
-    #     <accountholdername>Hr E G H Küppers en/of MW M.J. Küppers-Veeneman</accountholdername>
+    #     <accountid>654412345</accountid>
+    #     <accountholdername>Mr Küppers</accountholdername>
     #     <externaltransactionid>0050000081927015</externaltransactionid>
     #   </paymentdetails>
     #   <checkoutdata version="0.1">
@@ -102,12 +105,68 @@ class StatusReply(XmlResponse):
     #     <order-total currency="EUR">20.00</order-total>
     #   </checkoutdata>
     # </status>
+    #
+    #
+    # Connect example:
+    # ------------------
+    #
+    # <status result="ok">
+    #   <ewallet>
+    #     <id>50102723</id>
+    #     <status>completed</status>
+    #     <fastcheckout>NO</fastcheckout>
+    #     <created>20150526130908</created>
+    #     <modified>20150526131108</modified>
+    #     <reasoncode />
+    #     <reason />
+    #   </ewallet>
+    #   <customer>
+    #     <amount>6000</amount>
+    #     <currency>EUR</currency>
+    #     <account />
+    #     <locale>nl_NL</locale>
+    #     <firstname>Diederik</firstname>
+    #     <lastname>van der Boor</lastname>
+    #     <address1>Foo</address1>
+    #     <address2 />
+    #     <housenumber>...</housenumber>
+    #     <zipcode>...</zipcode>
+    #     <city>...</city>
+    #     <state />
+    #     <country>FR</country>
+    #     <countryname />
+    #     <phone1>+33 123456789</phone1>
+    #     <phone2 />
+    #     <email>foo@example.org</email>
+    #   </customer>
+    #   <customer-delivery />
+    #   <transaction>
+    #     <id>10217</id>
+    #     <recurringid />
+    #     <currency>EUR</currency>
+    #     <amount>6000</amount>
+    #     <cost>174</cost>
+    #     <description>...</description>
+    #     <var1>215</var1>
+    #     <var2 />
+    #     <var3 />
+    #     <items />
+    #     <amountrefunded>0</amountrefunded>
+    #   </transaction>
+    #   <paymentdetails>
+    #     <type>MASTERCARD</type>
+    #     <accountid />
+    #     <accountholdername>A.B. Tester/accountholdername>
+    #     <externaltransactionid>2-70-370907</externaltransactionid>
+    #   </paymentdetails>
+    # </status>
 
 
-    def __init__(self, ewallet, customer, customer_delivery, transaction, payment_details, checkoutdata):
+
+    def __init__(self, ewallet, customer, customer_delivery, transaction, payment_details, checkoutdata=None):
         """
         :type ewallet: Ewallet
-        :type customer: StatusCustomer
+        :type customer: CustomerStatus
         :type customer_delivery: CustomerDelivery
         :type transaction: Transaction
         :type payment_details: PaymentDetails

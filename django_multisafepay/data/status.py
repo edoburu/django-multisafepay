@@ -28,7 +28,7 @@ class Ewallet(XmlObject):
         self.reasoncode = reasoncode
 
 
-class StatusCustomer(Customer):
+class CustomerStatus(Customer):
     """
     A customer with additional fields.
     """
@@ -48,7 +48,7 @@ class StatusCustomer(Customer):
         self.phone1 = kwargs.pop('phone1')
         self.phone2 = kwargs.pop('phone2')
         self.countryname = kwargs.pop('countryname')
-        super(StatusCustomer, self).__init__(*args, **kwargs)
+        super(CustomerStatus, self).__init__(*args, **kwargs)
 
 
 
@@ -101,6 +101,39 @@ class CheckoutData(XmlObject):
             custom_fields=None,
             # TODO: all other objects are currently ignored. (shopping-cart, custom-fields)
         )
+
+
+class TransactionStatus(XmlObject):
+    """
+    Information about a transaction, as returned by the status call..
+    """
+    xml_name = 'transaction'
+    xml_fields = (
+        'id',
+        'recurringid',
+        'currency',
+        'amount',
+        'cost',
+        'description',
+        'var1',    # custom var 1
+        'var2',    # custom var 2
+        'var3',    # custom var 3
+        'items',
+        'amountrefunded',
+    )
+
+    def __init__(self, id, recurringid, currency, amount, cost, description, var1=None, var2=None, var3=None, items=None, amountrefunded=None):
+        self.id = id
+        self.recurringid = recurringid
+        self.currency = currency
+        self.amount = amount
+        self.cost = cost
+        self.description = description
+        self.var1 = var1
+        self.var2 = var2
+        self.var3 = var3
+        self.items = items
+        self.amountrefunded = amountrefunded
 
 
 class OrderAdjustment(XmlObject):

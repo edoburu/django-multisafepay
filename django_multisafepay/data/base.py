@@ -18,6 +18,9 @@ class XmlObject(object):
     xml_attrs = None
     xml_fields = ()
 
+    def __repr__(self):
+        return "<{0} {1}>".format(self.__class__.__name__, self.to_xml().encode('utf-8'))
+
     def to_xml(self):
         # get xml message
         lines = self.get_xml_children()
@@ -60,7 +63,8 @@ class XmlObject(object):
         """
         if xml is None:
             return None
-        return cls(**cls.get_class_kwargs(xml))
+        kwargs = cls.get_class_kwargs(xml)  # Make kwargs available in debugging stack frame.
+        return cls(**kwargs)
 
     @classmethod
     def get_class_kwargs(cls, xml):

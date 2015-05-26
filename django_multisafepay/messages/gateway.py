@@ -1,8 +1,8 @@
-from .base import MessageObject
+from .base import XmlRequest, XmlResponse
 from django_multisafepay.data.gateway import Gateway
 
 
-class Gateways(MessageObject):
+class Gateways(XmlRequest):
     """
     The message to start a checkout
     """
@@ -21,7 +21,7 @@ class Gateways(MessageObject):
         self.customer = customer
 
 
-class GatewaysReply(object):
+class GatewaysReply(XmlResponse):
     """
     Reply from a start_transaction call.
     """
@@ -36,11 +36,12 @@ class GatewaysReply(object):
         return iter(self.gateways)
 
     @classmethod
-    def from_xml(cls, xml):
+    def get_class_kwargs(cls, xml):
         """
+        Split the object to all ``__init__()`` parameters.
         :type xml: xml.etree.ElementTree.Element
         """
         gateways = xml.find('gateways')
-        return cls(
+        return dict(
             gateways=[Gateway.from_xml(gateway) for gateway in gateways]
         )

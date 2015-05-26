@@ -1,8 +1,8 @@
 import hashlib
-from .base import MessageObject
+from .base import XmlRequest, XmlResponse
 
 
-class RedirectTransaction(MessageObject):
+class RedirectTransaction(XmlRequest):
     """
     The message to start a checkout, using the Connect method.
     """
@@ -41,7 +41,7 @@ class RedirectTransaction(MessageObject):
         return hashlib.md5(str(data)).hexdigest()
 
 
-class RedirectTransactionReply(object):
+class RedirectTransactionReply(XmlResponse):
     """
     Reply from a redirecttransaction call.
     """
@@ -54,12 +54,12 @@ class RedirectTransactionReply(object):
         self.payment_url = payment_url
 
     @classmethod
-    def from_xml(cls, xml):
+    def get_class_kwargs(cls, xml):
         """
         :type xml: xml.etree.ElementTree.Element
         """
         transaction = xml.find('transaction')
-        return cls(
+        return dict(
             id=transaction.find('id').text,
-            payment_url=transaction.find('payment_url').text
+            payment_url=transaction.find('payment_url').text,
         )

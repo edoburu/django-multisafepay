@@ -1,10 +1,10 @@
 # coding=utf-8
 from django_multisafepay.data import CustomerDelivery, Transaction, Merchant
 from django_multisafepay.data.status import Ewallet, PaymentDetails, StatusCustomer, CheckoutData
-from .base import MessageObject
+from .base import XmlRequest, XmlResponse
 
 
-class Status(MessageObject):
+class Status(XmlRequest):
     """
     The message to request a status
     """
@@ -28,7 +28,7 @@ class Status(MessageObject):
         self.transaction = Transaction(id=transaction_id)
 
 
-class StatusReply(object):
+class StatusReply(XmlResponse):
     """
     Reply from a status call.
     """
@@ -129,17 +129,17 @@ class StatusReply(object):
     STATUS_EXPIRED = "expired"         # expired
 
     @classmethod
-    def from_xml(cls, xml):
+    def get_class_kwargs(cls, xml):
         """
         :type xml: xml.etree.ElementTree.Element
         """
-        return cls(
+        return dict(
             ewallet=Ewallet.from_xml(xml.find('ewallet')),
-            customer=StatusCustomer.from_xml(xml.find('customer')),
+            customer=CustomerStatus.from_xml(xml.find('customer')),
             customer_delivery=CustomerDelivery.from_xml(xml.find('customer-delivery')),
-            transaction=Transaction.from_xml(xml.find('transaction')),
+            transaction=TransactionStatus.from_xml(xml.find('transaction')),
             payment_details=PaymentDetails.from_xml(xml.find('paymentdetails')),
-            checkoutdata=CheckoutData.from_xml(xml.find('checkoutdata'))
+            checkoutdata=CheckoutData.from_xml(xml.find('checkoutdata')),
         )
 
     @property

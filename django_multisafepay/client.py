@@ -2,13 +2,14 @@
 API calls to the payment gateway webservice
 """
 import logging
-import requests
 from xml.etree import ElementTree
+
+import requests
 from django_multisafepay import __version__ as package_version
 from django_multisafepay import appsettings, messages
 from django_multisafepay.data import Merchant, Plugin
 from django_multisafepay.data.gateway import GatewayCustomer
-from django_multisafepay.exceptions import MultiSafepayServerException, MultiSafepayException
+from django_multisafepay.exceptions import MultiSafepayException, MultiSafepayServerException
 
 logger = logging.getLogger(__name__)
 

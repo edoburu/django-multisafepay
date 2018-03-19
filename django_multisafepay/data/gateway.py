@@ -1,4 +1,5 @@
 from django.utils.translation import to_locale
+
 from .base import XmlObject
 
 

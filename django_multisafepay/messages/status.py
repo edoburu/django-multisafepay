@@ -1,6 +1,7 @@
 # coding=utf-8
-from django_multisafepay.data import CustomerDelivery, Transaction, Merchant
-from django_multisafepay.data.status import Ewallet, PaymentDetails, CustomerStatus, CheckoutData, TransactionStatus
+from django_multisafepay.data import CustomerDelivery, Merchant, Transaction
+from django_multisafepay.data.status import CheckoutData, CustomerStatus, Ewallet, PaymentDetails, TransactionStatus
+
 from .base import XmlRequest, XmlResponse
 
 

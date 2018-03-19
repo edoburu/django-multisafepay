@@ -1,9 +1,10 @@
 import logging
+
 from django.db import transaction
 from django.http import HttpResponse
 from django.utils.html import format_html
-from django.views.generic import View
 from django.utils.translation import ugettext_lazy as _
+from django.views.generic import View
 from django_multisafepay.client import MultiSafepayClient
 from django_multisafepay.signals import order_status_updated
 

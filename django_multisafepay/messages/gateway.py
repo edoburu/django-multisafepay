@@ -1,5 +1,6 @@
-from .base import XmlRequest, XmlResponse
 from django_multisafepay.data.gateway import Gateway
+
+from .base import XmlRequest, XmlResponse
 
 
 class Gateways(XmlRequest):

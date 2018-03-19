@@ -1,5 +1,6 @@
-from .base import XmlObject, Price
 from django_multisafepay.data import Customer
+
+from .base import Price, XmlObject
 
 
 class Ewallet(XmlObject):

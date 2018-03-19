@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
-from django_multisafepay import appsettings, SHOP_NAME, PLUGIN_VERSION
+from django_multisafepay import PLUGIN_VERSION, SHOP_NAME, appsettings
+
 from .base import XmlObject
 
 

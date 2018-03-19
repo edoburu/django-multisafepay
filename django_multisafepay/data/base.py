@@ -1,5 +1,6 @@
-from xml.sax.saxutils import escape
 from decimal import Decimal
+from xml.sax.saxutils import escape
+
 from django.utils.encoding import force_text
 
 __all__ = (

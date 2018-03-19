@@ -1,4 +1,5 @@
 from xml.etree import ElementTree
+
 from django_multisafepay import USER_AGENT
 from django_multisafepay.data.base import XmlObject
 

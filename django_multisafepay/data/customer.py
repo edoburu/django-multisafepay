@@ -49,7 +49,6 @@ class Customer(XmlObject):
         self.user_agent = user_agent
 
 
-
 class CustomerDelivery(XmlObject):
     """
     Delivery address

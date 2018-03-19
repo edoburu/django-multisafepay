@@ -17,7 +17,7 @@ class Transaction(XmlObject):
         'items',
         'manual',
         'daysactive',
-        #'gateway' added manually
+        # 'gateway' added manually
     )
 
     def __init__(self, id, currency=None, amount=None, description=None, items=None, manual=None, daysactive=None, gateway=None, gateway_issuer=None, var1=None, var2=None, var3=None):

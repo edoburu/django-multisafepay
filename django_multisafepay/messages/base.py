@@ -7,6 +7,7 @@ class XmlRequest(XmlObject):
     """
     A root XML node.
     """
+
     def to_xml(self):
         lines = self.get_xml_children()
         return u'<?xml version="1.0" encoding="UTF-8"?>\n' \

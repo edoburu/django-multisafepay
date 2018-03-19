@@ -51,7 +51,6 @@ class CustomerStatus(Customer):
         super(CustomerStatus, self).__init__(*args, **kwargs)
 
 
-
 class PaymentDetails(XmlObject):
     """
     The payment details in the status reply

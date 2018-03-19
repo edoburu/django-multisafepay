@@ -45,6 +45,7 @@ class RedirectTransactionReply(XmlResponse):
     """
     Reply from a redirecttransaction call.
     """
+
     def __init__(self, id, payment_url):
         """
         :param id: ID of the session

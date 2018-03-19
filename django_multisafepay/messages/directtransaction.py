@@ -1,7 +1,6 @@
 from .redirecttransaction import RedirectTransaction, RedirectTransactionReply
 
 
-
 class DirectTransaction(RedirectTransaction):
     """
     The message to start a checkout and skip the initial choices, using the Fast-Connect method.

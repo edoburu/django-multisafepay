@@ -21,9 +21,9 @@ class Status(XmlRequest):
         """
         self.merchant = Merchant(
             # Only these fields are required:
-            account = merchant.account,
-            site_id = merchant.site_id,
-            site_code = merchant.site_secure_code,
+            account=merchant.account,
+            site_id=merchant.site_id,
+            site_code=merchant.site_secure_code,
         )
         self.transaction = Transaction(id=transaction_id)
 
@@ -161,8 +161,6 @@ class StatusReply(XmlResponse):
     #   </paymentdetails>
     # </status>
 
-
-
     def __init__(self, ewallet, customer, customer_delivery, transaction, payment_details, checkoutdata=None):
         """
         :type ewallet: Ewallet
@@ -179,7 +177,7 @@ class StatusReply(XmlResponse):
         self.payment_details = payment_details
         self.checkoutdata = checkoutdata
 
-    STATUS_INITIALIZED = "initialized" # waiting
+    STATUS_INITIALIZED = "initialized"  # waiting
     STATUS_COMPLETED = "completed"     # payment complete
     STATUS_WAITING = "uncleared"       # waiting (credit cards or direct debit)
     STATUS_CANCELLED = "void"          # canceled

@@ -37,11 +37,9 @@ class MultiSafepayClient(object):
         self.plugin = plugin or Plugin()
         self.is_test = is_test if is_test is not None else appsettings.MULTISAFEPAY_TESTING
 
-
     @property
     def api_url(self):
         return URL_TEST if self.is_test else URL_LIVE
-
 
     def _call(self, message, response_class=None):
         """
@@ -78,7 +76,7 @@ class MultiSafepayClient(object):
         response.encoding = 'utf-8'
         logger.debug(u"http succeeded: {0}".format(response.text))
 
-        xml = ElementTree.fromstring(response.content) # parser=ElementTree.XMLParser(encoding=response.encoding))  # Python 2.6 doesn't support this.
+        xml = ElementTree.fromstring(response.content)  # parser=ElementTree.XMLParser(encoding=response.encoding))  # Python 2.6 doesn't support this.
 
         if xml.attrib['result'] != 'ok':
             ex = MultiSafepayServerException.from_xml(xml)
@@ -89,7 +87,6 @@ class MultiSafepayClient(object):
             return response_class.from_xml(xml)
         else:
             return xml
-
 
     def _transaction_call(self, message, response_class=None):
         """
@@ -108,7 +105,6 @@ class MultiSafepayClient(object):
                 # Mention transaction ID in exception message
                 raise MultiSafepayServerException(e.code, u"{0} ({1})".format(e.description, message.transaction.id))
             raise
-
 
     def start_checkout(self, transaction, customer, customer_delivery=None, cart=None, fields=None, checkout_settings=None, google_analytics=None):
         """
@@ -143,7 +139,6 @@ class MultiSafepayClient(object):
 
         return self._transaction_call(request, response_class=messages.CheckoutTransactionReply)
 
-
     def status(self, transaction_id):
         """
         Request the status of a transaction.
@@ -156,7 +151,6 @@ class MultiSafepayClient(object):
             # Be more verbose in the logs.
             logger.error(u"Failed to fetch status for transaction %s: code=%s, description=%s", transaction_id, e.code, e.description)
             raise
-
 
     def gateways(self, locale, country):
         """
@@ -175,7 +169,6 @@ class MultiSafepayClient(object):
         )
 
         return self._call(request, response_class=messages.GatewaysReply)
-
 
     def redirect_transaction(self, transaction, customer, google_analytics=None):
         """
@@ -198,7 +191,6 @@ class MultiSafepayClient(object):
         )
 
         return self._transaction_call(request, response_class=messages.RedirectTransactionReply)
-
 
     def direct_transaction(self, transaction, customer, gatewayinfo, google_analytics=None):
         """
@@ -223,6 +215,5 @@ class MultiSafepayClient(object):
         )
 
         return self._transaction_call(request, response_class=messages.DirectTransactionReply)
-
 
     # TODO: idealissuers request

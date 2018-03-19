@@ -1,7 +1,6 @@
 from .redirecttransaction import RedirectTransaction, RedirectTransactionReply
 
 
-
 class CheckoutTransaction(RedirectTransaction):
     """
     The message to start a checkout, using the Fast-Connect method.

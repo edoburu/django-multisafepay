@@ -78,7 +78,6 @@ class XmlObject(object):
         return kwargs
 
 
-
 class Price(Decimal):
     """
     A decimal value with currency attached.

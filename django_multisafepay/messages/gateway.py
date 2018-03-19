@@ -25,6 +25,7 @@ class GatewaysReply(XmlResponse):
     """
     Reply from a start_transaction call.
     """
+
     def __init__(self, gateways):
         """
         :param id: ID of the session

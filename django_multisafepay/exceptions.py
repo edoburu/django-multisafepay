@@ -2,6 +2,7 @@
 All exceptions raised by this package.
 """
 
+
 class MultiSafepayException(Exception):
     """
     Base class for all exceptions from MultiSafepay
@@ -13,11 +14,11 @@ class MultiSafepayServerException(MultiSafepayException):
     """
     Base class for reported errors via the API.
     """
+
     def __init__(self, code, description):
         super(MultiSafepayServerException, self).__init__("{0}: {1}".format(code, description))
         self.code = code
         self.description = description
-
 
     @classmethod
     def from_xml(cls, xml):

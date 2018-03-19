@@ -16,7 +16,6 @@ except AttributeError:
     transaction_atomic = transaction.commit_on_success
 
 
-
 class NotificationView(View):
     """
     View to be called by MultiSafepay when a status update occured.

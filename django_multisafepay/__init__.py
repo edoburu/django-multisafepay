@@ -1,7 +1,7 @@
 import django
 
 # following PEP 440
-__version__ = "1.0"
+__version__ = "1.1"
 
 SHOP_NAME = "django-multisafepay"
 PLUGIN_VERSION = __version__

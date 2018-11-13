@@ -39,7 +39,7 @@ class RedirectTransaction(XmlRequest):
             self.merchant.site_id,
             self.transaction.id
         )
-        return hashlib.md5(str(data)).hexdigest()
+        return hashlib.md5(data.encode('UTF-8')).hexdigest()
 
 
 class RedirectTransactionReply(XmlResponse):

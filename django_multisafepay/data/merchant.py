@@ -1,7 +1,11 @@
-from django.core.urlresolvers import reverse
 from django_multisafepay import PLUGIN_VERSION, SHOP_NAME, appsettings
 
 from .base import XmlObject
+
+try:
+    from django.urls import reverse
+except ImportError:  # Django < 1.10
+    from django.core.urlresolvers import reverse
 
 
 class Merchant(XmlObject):

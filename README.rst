@@ -2,20 +2,18 @@ django-multisafepay
 ===================
 
 Payment gateway integration for `MultiSafepay <https://www.multisafepay.com/>`_.
-MultiSafepay is a large payment gateway based in The Netherlands that supports many international payment methods.
+MultiSafepay is a Dutch payment services provider that supports many international payment methods.
 
-MultiSafepay offers two methods for payments, see https://www.multisafepay.com/en/Payment-services/:
+This SDK supports:
 
-* `Fast checkout <https://www.multisafepay.com/en/fast-checkout/>`_ requires customers to create a MultiSafePay account.
-  You only have to pay a transaction fee, but the account system is not very user-friendly.
-* `Connect <https://www.multisafepay.com/en/connect/>`_ provides direct payments.
-  As a merchant, you have to pay a monthly subscription.
+- [FastCheckout](https://docs.multisafepay.com/docs/fastcheckout)
+- [Payment pages](https://docs.multisafepay.com/docs/payment-pages)
 
 
 Installation
 ============
 
-Install via pip::
+To install via pip::
 
     pip install django-multisafepay
 
@@ -23,28 +21,28 @@ Install via pip::
 Configuration
 -------------
 
-In the MultiSafepay merchant `site settings <https://merchant.multisafepay.com/account/details/sites/>`_,
-add a new website. Use those settings to configure the application:
+1. Sign in to your `MultiSafepay dashboard <https://merchant.multisafepay.com/>`_.
+2. Go to **Integrations** > **Sites**, and then click **Add new site**. 
+3. Enter the required information about your site. 
+4. From the **Site profile** page, copy the following details:
 
 `MULTISAFEPAY_ACCOUNT_ID`
-    The account ID, provided by MultiSafepay.
 
 `MULTISAFEPAY_SITE_ID`
-    The site ID, found in the MultiSafepay website settings panel.
 
-`MULTISAFEPAY_SITE_CODE`
-    The site security code, found in the MultiSafepay website settings panel.
+`MULTISAFEPAY_SITE_CODE` 
+    The site security code.
 
 `MULTISAFEPAY_TESTING`
     Whether or not to run in testing mode. Defaults to `True`.
 
-Add to ``urls.py``::
+5. To configure the application, add to ``urls.py``::
 
     urlpatterns += patterns('',
         url(r'^api/multisafepay/', include('django_multisafepay.urls')),
     )
 
-As recommendation, temporary log all events from this package as well::
+6. We recommend temporarily logging all events from this package::
 
     LOGGING = {
         # ...
@@ -72,7 +70,7 @@ As recommendation, temporary log all events from this package as well::
 Usage
 =====
 
-Creating a new payment transaction::
+To create a new order::
 
     from django_multisafepay.client import MultiSafepayClient
     from django_multisafepay.data import Transaction, Customer
@@ -93,10 +91,10 @@ Creating a new payment transaction::
         return redirect(reply.payment_url)
 
 
-* For the Fast Checkout, use the ``start_checkout()`` method.
-* For the Connect method, use the ``redirect_transaction()`` method.
+- For FastCheckout orders, use the ``start_checkout()`` method.
+- For payment page orders, use the ``redirect_transaction()`` method.
 
-Both methods return an URL to redirect the user to.
+Both methods return an URL to redirect the customer to.
 
 Fetching status::
 
@@ -107,8 +105,8 @@ Fetching status::
 TODO
 ====
 
-* Integrate nicely in django-merchant_ or django-getpaid_.
-* Not all XML features are implemented, e.g.:
+- Integrate cleanly in django-merchant_ or django-getpaid_.
+- Not all XML features are implemented, e.g.:
 
  * checkout-shopping-cart
  * custom-fields
